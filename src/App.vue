@@ -3,20 +3,15 @@ import { ref } from 'vue'
 import ThemeController from './components/ThemeController.vue'
 import ProfileCard from './components/ProfileCard.vue'
 
-// Реактивное состояние для отображения алерта
+// Управління станом алерта строго через ref (без таймерів)
 const isAlertVisible = ref(false)
 
-const handleLike = () => {
-  isAlertVisible.value = true
-  // Скрываем алерт через 3 секунды (необязательно, но улучшает UX)
-  setTimeout(() => {
-    isAlertVisible.value = false
-  }, 3000)
+const toggleLike = () => {
+  isAlertVisible.value = !isAlertVisible.value
 }
 </script>
 
 <template>
-  <!-- Используем абстрактный цвет фона bg-base-200 для всего экрана -->
   <div class="min-h-screen bg-base-200 p-8 flex flex-col items-center gap-8">
     
     <header class="w-full max-w-4xl flex justify-end">
@@ -25,10 +20,10 @@ const handleLike = () => {
 
     <main class="flex flex-col items-center gap-6 relative">
       
-      <!-- Семантический алерт -->
+      <!-- Анімація через вбудований компонент Transition -->
       <Transition name="fade">
         <div v-if="isAlertVisible" class="alert alert-success absolute -top-20 w-auto">
-          <span>Успішно! Ви поставили лайк цій сторінці.</span>
+          <span>Успішно! Ви оновили статус профілю.</span>
         </div>
       </Transition>
 
@@ -40,7 +35,7 @@ const handleLike = () => {
         </template>
         
         <template #badge>
-          Іван Франко
+          Студент АТ
           <div class="badge badge-primary">PRO</div>
         </template>
         
@@ -49,7 +44,9 @@ const handleLike = () => {
         </template>
         
         <template #actions>
-          <button class="btn btn-secondary" @click="handleLike">Поставити лайк</button>
+          <button class="btn btn-secondary" @click="toggleLike">
+            {{ isAlertVisible ? 'Приховати статус' : 'Оновити статус' }}
+          </button>
         </template>
       </ProfileCard>
 
@@ -58,7 +55,6 @@ const handleLike = () => {
 </template>
 
 <style scoped>
-/* Анимация для алерта с использованием стандартных классов Vue (материал лекций) */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease, transform 0.3s ease;
