@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "cyberpunk";
+}
+@plugin "daisyui/theme" {
+  name: "retro";
+}
